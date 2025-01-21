@@ -3,32 +3,25 @@ import 'dart:io' as io;
 void main(List<String> prog_args) {
   final args = AppArgs(prog_args);
 
-  for (var i = 0; i < args.iterations; i++) {
-    if (args.verbose) {
-      print('This is verbose output.');
-    }
-    print('Hello, ${args.name}!');
-  }
+  print("The parsed path is: '${args.path.path}'");
 }
 
 class AppArgs {
-  bool verbose = false;
-  String name = 'World';
-  int iterations = 1;
+  late io.File path;
 
   AppArgs(List<String> args) {
+    var pathFound = false;
+
     for (var i = 0; i < args.length; i++) {
-      if (args[i] == '-v' || args[i] == '--verbose') {
-        verbose = true;
-      } else if ((args[i] == '-n' || args[i] == '--name') &&
-          i + 1 < args.length) {
-        name = args[i + 1];
-        i++;
-      } else if ((args[i] == '-i' || args[i] == '--iterations') &&
-          i + 1 < args.length) {
-        iterations = int.tryParse(args[i + 1]) ?? 1;
-        i++;
+      if (!args[i].startsWith('-')) {
+        path = io.File(args[i]);
+        pathFound = true;
+        break;
       }
+    }
+
+    if (!pathFound) {
+      throw ArgumentError('File path must be supplied in args');
     }
   }
 }
