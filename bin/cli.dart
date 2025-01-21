@@ -1,7 +1,7 @@
 import 'dart:io' as io;
 
-void main(List<String> prog_args) {
-  final args = AppArgs(prog_args);
+void main(List<String> progArgs) {
+  final args = AppArgs(progArgs);
 
   print("The parsed path is: '${args.path.path}'");
 }
